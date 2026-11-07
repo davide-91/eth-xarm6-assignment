@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- Two xArm6 robots in the layout of the report: R1 at (0, -0.4), R2 at (0, +0.4), fixture at the origin.
+     Usage: roslaunch xarm_cell_viz cell.launch scene:=r1_place_far
+     Scenes: home, pick, r1_place_near, r1_place_far, r2_place_left, r2_place_right -->
+<launch>
+  <arg name="scene" default="r1_place_far"/>
+
+  <!-- Official UFACTORY dual-arm model (xarm_description), two xArm6 with the xArm Gripper -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find xarm_description)/urdf/dual_xarm_device.urdf.xacro'
+      dof_1:=6 dof_2:=6 prefix_1:=R1_ prefix_2:=R2_
+      add_gripper_1:=true add_gripper_2:=true
+      attach_xyz_1:='0 -0.4 0' attach_xyz_2:='0 0.4 0'"/>
+
+  <!-- Joint angles of the selected scene (computed with reach_check.py) -->
+  <node name="cell_poses" pkg="xarm_cell_viz" type="cell_poses.py" output="screen">
+    <param name="scene" value="$(arg scene)"/>
+  </node>
+
+  <!-- Fills the gripper joints not published by cell_poses -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <rosparam param="source_list">[/cell_joint_states]</rosparam>
+  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find xarm_cell_viz)/rviz/cell.rviz"/>
+</launch>
