@@ -31,7 +31,11 @@ The DH model was cross-checked against UFACTORY's ROS kinematics file (`xarm_ros
 The package loads the official dual-arm model from UFACTORY's `xarm_ros` (`xarm_description`), places R1 at (0, −0.4) m and R2 at (0, +0.4) m, and shows the robots at the poses computed by `reach_check.py`, with the fixture and the trays as markers. At the main poses there is no interference between the two arms, the fixture and the trays (see `figures/rviz_cell.png`).
 
 ```
-# in a catkin workspace that contains xarm_description (github.com/xArm-Developer/xarm_ros) and this package
+# Option 1: on Ubuntu 20.04 + ROS Noetic, after cloning this repository to ~/eth_repo
+bash ~/eth_repo/ros/setup_vm.sh
+
+# Option 2: by hand, in a catkin workspace that contains xarm_description (github.com/xArm-Developer/xarm_ros) and this package
+chmod +x src/xarm_cell_viz/scripts/cell_poses.py
 catkin_make && source devel/setup.bash
 roslaunch xarm_cell_viz cell.launch scene:=r1_place_far
 ```
