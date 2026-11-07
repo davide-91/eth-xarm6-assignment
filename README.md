@@ -12,7 +12,7 @@ Two UFACTORY xArm6 robots must assemble four U-profiles with tolerances of ±0.0
 | `reachability/` | `reach_check.py`: reachability check of the cell layout, based on the official xArm6 DH parameters |
 | `control/sfc/` | SFC of the cell, drawn in Schneider SoMachine 4.3: `SFC_scheme.project` (open with SoMachine / EcoStruxure Machine Expert) and image |
 | `control/petri_net/` | Petri net of the mutual exclusion on the fixture, modelled and analysed in PIPE: `petri_net_mutual_exclusion.xml` (PNML, open with PIPE), image and invariant analysis |
-| `ros/xarm_cell_viz/` | ROS Noetic package: the two xArm6 (official UFACTORY model) in the cell layout, shown in RViz at the main poses |
+| `ros/xarm_cell_viz/` | ROS Noetic package: kinematic simulation of the two xArm6 (official UFACTORY model) in the cell layout, shown in RViz at the main poses; `ros/setup_vm.sh` sets up the workspace |
 | `figures/` | Figures of the report |
 
 ## Reachability check
@@ -26,9 +26,9 @@ python reachability/reach_check.py
 
 The DH model was cross-checked against UFACTORY's ROS kinematics file (`xarm_ros2`, `xarm6_default_kinematics.yaml`): less than 0.003 mm difference over 1000 random poses. The check covers geometry only (no collisions, no dynamics); the tool length of 200 mm is assumed.
 
-## ROS visualization (ROS Noetic)
+## Kinematic simulation in ROS (Noetic)
 
-The package loads the official dual-arm model from UFACTORY's `xarm_ros` (`xarm_description`), places R1 at (0, −0.4) m and R2 at (0, +0.4) m, and shows the robots at the poses computed by `reach_check.py`, with the fixture and the trays as markers.
+The package loads the official dual-arm model from UFACTORY's `xarm_ros` (`xarm_description`), places R1 at (0, −0.4) m and R2 at (0, +0.4) m, and shows the robots at the poses computed by `reach_check.py`, with the fixture and the trays as markers. At the main poses there is no interference between the two arms, the fixture and the trays (see `figures/rviz_cell.png`).
 
 ```
 # in a catkin workspace that contains xarm_description (github.com/xArm-Developer/xarm_ros) and this package
